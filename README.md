@@ -83,6 +83,15 @@ Evaluated on the held-out [test_data.csv](test_data.csv) (1,000 rows); also save
 | Support Vector Machine | |
 | **Overall winner** | |
 
+## Streamlit app
+
+[app.py](app.py) loads the saved pipelines from `model/` and scores a CSV without retraining.
+
+- **Inputs (sidebar):** CSV upload (tes (evaluate, compare, data tabs)t data only), a classifier dropdown, and a checkbox to use the bundled `test_data.csv`. The file must contain the target column `class` and all 15 feature columns; problems are reported with a clear message.
+- **Evaluate tab:** Accuracy, AUC, Precision, Recall, F1 and MCC for the chosen model, plus a confusion matrix, ROC curve and classification report.
+- **Compare all models tab:** the six metrics for all five models on the same file, with the best value per metric highlighted, and a bar chart.
+- **Data tab:** a preview of the file and its class counts.
+
 ## Project structure
 
 ```
