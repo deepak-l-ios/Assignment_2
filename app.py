@@ -76,13 +76,13 @@ with st.sidebar:
     st.header("Inputs")
     model_name = st.selectbox("Classifier", list(config.MODEL_FILES))
     uploaded = st.file_uploader("Test data (CSV)", type="csv")
-    use_bundled = st.checkbox("Use the bundled test_data.csv", value=uploaded is None)
+    use_bundled = st.checkbox("Use bundled test_data.csv when nothing is uploaded", value=True)
     st.caption(
         f"The file needs the target column `{config.TARGET_COL}` and these features: "
         + ", ".join(REQUIRED_FEATURES)
     )
 
-if uploaded is not None and not use_bundled:
+if uploaded is not None:
     data = pd.read_csv(uploaded)
     source = uploaded.name
 elif use_bundled:
