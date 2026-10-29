@@ -44,7 +44,7 @@ Preprocessing ([preprocessing.py](preprocessing.py), built into every saved mode
 
 https://github.com/deepak-l-ios/Assignment_2
 
-Streamlit app: TODO (add link after deployment)
+Streamlit app: https://ml-assignment2-deepak.streamlit.app/
 
 ## d. Models used
 
