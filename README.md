@@ -33,7 +33,12 @@ Key findings from the exploratory analysis ([notebooks/eda.ipynb](notebooks/eda.
 - Each `*_charge` column is perfectly correlated with its `*_minutes` column.
 - Because of the 14% churn rate, accuracy alone is misleading, so AUC, F1 and MCC are emphasised.
 
-Preprocessing (planned): drop `phone_number`, one-hot encode categorical columns, scale numeric columns, stratified train/test split.
+Preprocessing ([preprocessing.py](preprocessing.py), built into every saved model so uploaded raw CSVs need no manual preparation):
+
+- Dropped: `phone_number` (identifier) and the four `*_charge` columns (exact multiples of the matching `*_minutes` columns).
+- Numeric (11 columns): median imputation, then standard scaling.
+- Categorical (`state`, `area_code`, `international_plan`, `voice_mail_plan`): most-frequent imputation, then one-hot encoding (unknown categories ignored), giving 69 model inputs in total.
+- Train/test split: stratified, to keep the 14% churn rate in both parts.
 
 ## c. GitHub repository
 
@@ -69,7 +74,8 @@ Streamlit app: TODO (add link after deployment)
 ```
 .
 ├── app.py              # Streamlit app
-├── config.py           # paths, target column, split settings
+├── config.py           # paths, column roles, split settings
+├── preprocessing.py    # shared preprocessing (scaling, one-hot encoding)
 ├── evaluation.py       # metric computation
 ├── train.py            # trains models, saves them, writes test_data.csv
 ├── requirements.txt

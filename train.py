@@ -1,27 +1,22 @@
 """Train the five classifiers, save them, write test_data.csv and print the metrics table."""
 import joblib
 import pandas as pd
-from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
 import config
 from evaluation import compute_metrics
+from preprocessing import build_preprocessor
 
 
 def build_models():
     def pipe(clf):
-        return Pipeline(
-            [("impute", SimpleImputer(strategy="median")),
-             ("scale", StandardScaler()),
-             ("clf", clf)]
-        )
+        return Pipeline([("prep", build_preprocessor()), ("clf", clf)])
 
     return {
         "Logistic Regression": pipe(LogisticRegression(max_iter=1000)),
