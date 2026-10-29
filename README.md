@@ -74,14 +74,16 @@ Evaluated on the held-out [test_data.csv](test_data.csv) (1,000 rows); also save
 
 ### Observations
 
+The test set has 1,000 customers, 141 of them churners, so predicting "stayed" for everyone would already score 85.9% accuracy. Accuracy is therefore read together with recall, F1 and MCC. Counts below are for the churn class at the default 0.5 threshold.
+
 | ML Model Name | Observation about model performance |
 |---|---|
-| Logistic Regression | |
-| Decision Tree | |
-| KNN | |
-| Naive Bayes | |
-| Support Vector Machine | |
-| **Overall winner** | |
+| Logistic Regression | Catches the most churners (recall 0.752, 106 of 141) but pays for it in false alarms: precision is only 0.362 (about 187 loyal customers flagged), which pulls accuracy down to 0.778. The tuned `class_weight="balanced"` setting trades precision for recall. AUC 0.826 and MCC 0.408 show a linear boundary captures part of the pattern but misses interactions such as international plan combined with heavy day usage. A reasonable choice only if missing a churner is much costlier than a false alarm. |
+| Decision Tree | Best balance between precision (0.861) and recall (0.660): 93 churners found with only about 15 false alarms. Highest accuracy (0.937), F1 (0.747) and MCC (0.720) of all five. A shallow tree (depth 5, at least 10 samples per leaf) was enough, which matches the EDA: a few clear rules (international plan, 4 or more customer service calls, high daytime minutes) drive churn. Its AUC (0.878) is lower than SVM's because a tree outputs coarse leaf probabilities, so it ranks customers less finely. |
+| KNN | Very conservative: precision 0.917 but recall only 0.078 (11 of 141 churners found), so F1 is 0.144 and MCC 0.246. Accuracy (0.869) is barely above the 0.859 majority-class baseline. With 69 one-hot and scaled inputs and only 14% churners, the 25 nearest neighbours are almost always loyal customers, so few predictions cross 0.5. AUC (0.859) is much better than its F1, showing the ranking is useful and the problem is the threshold, not the model. Weakest model at the default threshold. |
+| Naive Bayes | Middle of the pack: recall 0.340, precision 0.522, F1 0.412, MCC 0.348, AUC 0.837. The Gaussian and independence assumptions fit poorly: one-hot columns are binary, and minutes/calls are correlated. Heavy smoothing (`var_smoothing` = 0.1) was needed to get a usable model, and untuned it was far worse (AUC about 0.63). Fast and simple, but it does not match the tree or SVM here. |
+| Support Vector Machine | Best ranker: highest AUC (0.910), also the highest cross-validated AUC (0.905), with strong precision (0.853) and accuracy (0.912). Recall is moderate (0.454, 64 of 141), so it misses more churners than the tree and its F1 (0.593) and MCC (0.583) are lower. Its probability scores are good, but the 0.5 cut-off is too strict for the 14% positive class; a lower threshold would likely lift recall at some cost in precision. |
+| **Overall winner** | **Decision Tree.** It gives the best accuracy (0.937), F1 (0.747) and MCC (0.720), and the best precision/recall balance, using simple, explainable rules. The SVM is a close second and is the best by AUC (0.910 vs 0.878), so it would be the better pick if scores were ranked or the threshold tuned. Naive Bayes, Logistic Regression and KNN trail. The ranking rests on one test split with 141 churners, so small gaps (for example between the tree and the SVM on cross-validated AUC, 0.901 vs 0.905) should not be over-interpreted. |
 
 ## Streamlit app
 
