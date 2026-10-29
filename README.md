@@ -132,4 +132,4 @@ streamlit run app.py
 
 ## Deployment
 
-Deployed on Streamlit Community Cloud: select this repo, branch `master`, main file `app.py`.
+Deployed on Streamlit Community Cloud: repository `deepak-l-ios/Assignment_2`, branch `main`, main file `app.py`, Python 3.13 (advanced settings). `requirements.txt` pins the scikit-learn, NumPy, SciPy, pandas and joblib versions used to train the saved models so they load unchanged in the cloud.

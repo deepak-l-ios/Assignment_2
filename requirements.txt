@@ -1,8 +1,9 @@
-streamlit
-scikit-learn
-numpy
-pandas
+streamlit>=1.50
+scikit-learn==1.9.1
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.1.0
 matplotlib
 seaborn
-joblib
+joblib==1.6.0
 tabulate
