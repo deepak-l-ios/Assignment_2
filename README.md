@@ -62,13 +62,15 @@ Each model is a scikit-learn pipeline (preprocessing + classifier) tuned with `G
 
 ### Comparison table
 
+Evaluated on the held-out [test_data.csv](test_data.csv) (1,000 rows); also saved in [results/metrics.csv](results/metrics.csv). Precision, recall and F1 are for the churn class at the default 0.5 threshold.
+
 | ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
 |---|---|---|---|---|---|---|
-| Logistic Regression | | | | | | |
-| Decision Tree | | | | | | |
-| KNN | | | | | | |
-| Naive Bayes | | | | | | |
-| Support Vector Machine | | | | | | |
+| Logistic Regression | 0.7780 | 0.8260 | 0.3618 | 0.7518 | 0.4885 | 0.4084 |
+| Decision Tree | 0.9370 | 0.8781 | 0.8611 | 0.6596 | 0.7470 | 0.7200 |
+| KNN | 0.8690 | 0.8593 | 0.9167 | 0.0780 | 0.1438 | 0.2456 |
+| Naive Bayes | 0.8630 | 0.8365 | 0.5217 | 0.3404 | 0.4120 | 0.3482 |
+| Support Vector Machine | 0.9120 | 0.9103 | 0.8533 | 0.4539 | 0.5926 | 0.5828 |
 
 ### Observations
 
@@ -97,7 +99,7 @@ Each model is a scikit-learn pipeline (preprocessing + classifier) tuned with `G
 ├── data/dataset.csv    # full raw dataset
 ├── data/train_data.csv # training split (4,000 rows)
 ├── model/              # saved .joblib pipelines (one per classifier)
-└── results/            # selected hyperparameters
+└── results/            # selected hyperparameters and test metrics
 ```
 
 ## Setup and usage

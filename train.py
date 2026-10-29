@@ -85,6 +85,8 @@ def main():
         json.dump(best_params, fh, indent=2)
 
     table = pd.DataFrame(rows).T.round(4)
+    table.index.name = "Model"
+    table.to_csv(config.RESULTS_DIR / "metrics.csv")
     print()
     print(table.to_markdown())
 
