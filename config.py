@@ -5,6 +5,7 @@ DATA_PATH = BASE_DIR / "data" / "dataset.csv"
 TRAIN_DATA_PATH = BASE_DIR / "data" / "train_data.csv"
 TEST_DATA_PATH = BASE_DIR / "test_data.csv"
 MODEL_DIR = BASE_DIR / "model"
+RESULTS_DIR = BASE_DIR / "results"
 
 TARGET_COL = "class"
 TEST_SIZE = 0.2

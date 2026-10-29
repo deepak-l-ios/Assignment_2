@@ -48,6 +48,18 @@ Streamlit app: TODO (add link after deployment)
 
 ## d. Models used
 
+### Training and tuning
+
+Each model is a scikit-learn pipeline (preprocessing + classifier) tuned with `GridSearchCV` on the training split only: 5-fold stratified cross-validation, scored on ROC AUC (threshold-independent, so suitable for the 14% churn rate). The tuned pipelines are saved in [model/](model/) and the selected hyperparameters in [results/best_params.json](results/best_params.json).
+
+| Model | Parameters searched |
+|---|---|
+| Logistic Regression | `C` (0.01-10), `class_weight` |
+| Decision Tree | `max_depth` (3-12, none), `min_samples_leaf`, `class_weight` |
+| KNN | `n_neighbors` (3-25), `weights` |
+| Naive Bayes (Gaussian) | `var_smoothing` (1e-9 to 1) |
+| Support Vector Machine (RBF) | `C` (0.1-10), `gamma`, `class_weight` |
+
 ### Comparison table
 
 | ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
@@ -78,13 +90,14 @@ Streamlit app: TODO (add link after deployment)
 ├── preprocessing.py    # shared preprocessing (scaling, one-hot encoding)
 ├── evaluation.py       # metric computation
 ├── split_data.py       # stratified 80/20 split into train and test files
-├── train.py            # trains models on the train split, saves them, prints test metrics
+├── train.py            # tunes models on the train split, saves them, prints test metrics
 ├── requirements.txt
 ├── test_data.csv       # held-out test split (1,000 rows, used by the app)
 ├── notebooks/eda.ipynb # exploratory data analysis
 ├── data/dataset.csv    # full raw dataset
 ├── data/train_data.csv # training split (4,000 rows)
-└── model/              # saved .joblib pipelines
+├── model/              # saved .joblib pipelines (one per classifier)
+└── results/            # selected hyperparameters
 ```
 
 ## Setup and usage
