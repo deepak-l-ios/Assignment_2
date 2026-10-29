@@ -33,8 +33,13 @@ def check_dataset(df):
         return "Missing feature columns: " + ", ".join(f"`{c}`" for c in missing)
     if not set(df[config.TARGET_COL].dropna().unique()) <= {0, 1}:
         return f"`{config.TARGET_COL}` must contain only 0 and 1."
+    if df[config.TARGET_COL].isna().any():
+        return f"`{config.TARGET_COL}` has empty values."
     if df[config.TARGET_COL].nunique() < 2:
         return "The target column has only one class, so AUC cannot be computed."
+    not_numeric = [c for c in config.NUMERIC_COLS if not pd.api.types.is_numeric_dtype(df[c])]
+    if not_numeric:
+        return "These columns must be numeric: " + ", ".join(f"`{c}`" for c in not_numeric)
     return None
 
 
@@ -64,6 +69,11 @@ def roc_figure(y_true, scores):
     ax.set_ylabel("True positive rate")
     fig.tight_layout()
     return fig
+
+
+def show_figure(fig):
+    st.pyplot(fig)
+    plt.close(fig)
 
 
 st.title("Telecom churn - model checker")
@@ -114,10 +124,10 @@ with tab_eval:
     left, middle, right = st.columns([1, 1, 1.2])
     with left:
         st.markdown("**Confusion matrix**")
-        st.pyplot(confusion_figure(target, predicted))
+        show_figure(confusion_figure(target, predicted))
     with middle:
         st.markdown("**ROC curve**")
-        st.pyplot(roc_figure(target, scores))
+        show_figure(roc_figure(target, scores))
     with right:
         st.markdown("**Classification report**")
         report = classification_report(
