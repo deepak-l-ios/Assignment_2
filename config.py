@@ -2,6 +2,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
 DATA_PATH = BASE_DIR / "data" / "dataset.csv"
+TRAIN_DATA_PATH = BASE_DIR / "data" / "train_data.csv"
 TEST_DATA_PATH = BASE_DIR / "test_data.csv"
 MODEL_DIR = BASE_DIR / "model"
 

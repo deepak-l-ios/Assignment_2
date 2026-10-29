@@ -1,8 +1,7 @@
-"""Train the five classifiers, save them, write test_data.csv and print the metrics table."""
+"""Train the five classifiers on the training split, save them and print test-set metrics."""
 import joblib
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
@@ -28,14 +27,8 @@ def build_models():
 
 
 def main():
-    df = pd.read_csv(config.DATA_PATH)
-    train_df, test_df = train_test_split(
-        df,
-        test_size=config.TEST_SIZE,
-        stratify=df[config.TARGET_COL],
-        random_state=config.RANDOM_STATE,
-    )
-    test_df.to_csv(config.TEST_DATA_PATH, index=False)
+    train_df = pd.read_csv(config.TRAIN_DATA_PATH)
+    test_df = pd.read_csv(config.TEST_DATA_PATH)
 
     X_train, y_train = train_df.drop(columns=config.TARGET_COL), train_df[config.TARGET_COL]
     X_test, y_test = test_df.drop(columns=config.TARGET_COL), test_df[config.TARGET_COL]
